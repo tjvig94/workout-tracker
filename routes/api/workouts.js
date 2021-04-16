@@ -13,14 +13,11 @@ router.get('/', (req, res) => {
 });
 
 // Add one workout
-router.post('/', (req, res) => {
-    const newWorkout = new Workout();
-    const existingWorkout = Workout.findOne({ day: newWorkout.day });
-    if (existingWorkout) {
-        res.json(existingWorkout);
-    } else {
-        newWorkout.save();
-        res.json(newWorkout)
+router.post('/', async (req, res) => {
+    try {
+        console.log(req.body);
+    } catch (err) {
+        res.status(500).json({ error: err });
     }
 });
 
@@ -36,7 +33,7 @@ router.put('/:id', async (req, res) => {
                 $push: { exercises: updated_exercise }
             }
         );
-        res.status(200);
+        res.status(200).json(workout);
     } catch (err) {
         res.status(500).json({ error: err });
     }   
@@ -47,7 +44,7 @@ router.get('/range', async (req, res) => {
         const range = await Workout.find({});
         res.status(200).json(range);
     } catch (err) {
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err })
     }
 });
 
