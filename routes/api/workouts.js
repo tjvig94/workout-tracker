@@ -36,7 +36,7 @@ router.put('/:id', async (req, res) => {
                 $push: { exercises: updated_exercise }
             }
         );
-        res.status(200).json(workout);
+        res.status(200);
     } catch (err) {
         res.status(500).json({ error: err });
     }   
