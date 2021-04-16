@@ -12,9 +12,43 @@ router.get('/', (req, res) => {
     });  
 });
 
-// Get one workout
-router.get('/:id', (req, res) => {
-    Workout.findOne({})
-})
+// Add one workout
+router.post('/', (req, res) => {
+    const newWorkout = new Workout();
+    const existingWorkout = Workout.findOne({ day: newWorkout.day });
+    if (existingWorkout) {
+        res.json(existingWorkout);
+    } else {
+        newWorkout.save();
+        res.json(newWorkout)
+    }
+});
+
+// Update workout
+router.put('/:id', async (req, res) => {
+    try {
+        const workout = await Workout.updateOne(
+            {
+                _id: req.params.id,
+                updated_exercise: req.body
+            },
+            {
+                $push: { exercises: updated_exercise }
+            }
+        );
+        res.status(200).json(workout);
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }   
+});
+
+router.get('/range', async (req, res) => {
+    try {
+        const range = await Workout.find({});
+        res.status(200).json(range);
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
+});
 
 module.exports = router;
