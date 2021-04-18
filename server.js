@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const routes = require('./routes');
-const PORT = process.env.PORT || 3001;
+// const routes = require('./routes');
+const PORT = process.env.PORT || 8080;
 const path = require('path');
 require('dotenv').config();
 
@@ -15,7 +15,8 @@ mongoose.connect(process.env.MONGODB_URI, {
     useUnifiedTopology: true
 });
 
-app.use(routes);
+app.use(require('./routes/apiRoutes'));
+app.use(require('./routes/htmlRoutes'));
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}`)
